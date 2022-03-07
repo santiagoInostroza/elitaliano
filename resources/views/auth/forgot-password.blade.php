@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="fixed">
+    <div class="fixed inset-o">
         <figure>
             <img  class="w-full h-full object-cover "  src="{{asset('images/cover_page/paltas.jpg')}}" alt="">
         </figure>
