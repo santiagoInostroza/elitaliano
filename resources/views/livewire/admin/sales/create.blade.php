@@ -107,7 +107,7 @@
                 </div>
             </article>
             {{-- ITEMS AGREGADOS --}}
-            <article class="shadow bg-white border rounded overflow-auto" style="height: calc(100vh - 215px);">
+            <article class="shadow bg-white border rounded overflow-auto" :style="{'height: calc(100vh - 215px)':isMobile}">
                 <template x-if="!items.length>0">
                     <div class=" ">
                         <h3 class=" p-4 pb-2 uppercase">No hay productos agregados</h3> 
@@ -230,7 +230,7 @@
                 </div>
             </article> 
             {{-- Datos clientes --}}
-            <article class="overflow-auto" style="height: calc(100vh - 251px);">
+            <article class="overflow-auto" :style="{'height: calc(100vh - 251px)': isMobile}">
                 <div class="bg-white shadow  border rounded">
                     <div x-on:click="isOpenCustomerData = !isOpenCustomerData">
                         <div class="flex justify-between gap-1 items-center cursor-pointer p-2 border rounded">

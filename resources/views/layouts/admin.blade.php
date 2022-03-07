@@ -179,13 +179,17 @@
                         </div>
                     </div>
                     <script>
+                        var isMobile = (window.innerWidth < 768) ? true : false;
+                        function resize(){
+                            isMobile = (window.innerWidth < 768) ? true : false;
+                        },
+
                         function barraLateral(){
                             return{
-                                show: (window.innerWidth < 1536) ? false : true,
-                                isMobile: (window.innerWidth < 768) ? false : false,
+                        show: (window.innerWidth < 1536) ? false : true,
                                 resize:function(){
                                     this.show =  (window.innerWidth < 1536) ? false : true; 
-                                    this.isMobile = (window.innerWidth < 768) ? true : false;
+                                    isMobile = (window.innerWidth < 768) ? true : false;
                                 },
                             }
                         }
