@@ -2,7 +2,7 @@
    <x-guest-layout>
     <div class="fixed">
         <figure>
-            <img src="{{asset('images/cover_page/paltas.jpg')}}" alt="">
+            <img  class="w-full h-full object-cover "  src="{{asset('images/cover_page/paltas.jpg')}}" alt="">
         </figure>
     </div>
     <div class="absolute inset-0 flex justify-center items-center">

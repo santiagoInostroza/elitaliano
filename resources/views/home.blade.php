@@ -5,7 +5,7 @@
     <div class="min-h-screen flex justify-center items-center">
 
         <div class="fixed inset-0">
-            <img class="w-full h-full object-content " src="{{ asset('images/cover_page/paltas.jpg') }}" alt="PALTAS">  
+            <img class="w-full h-full object-cover " src="{{ asset('images/cover_page/paltas.jpg') }}" alt="PALTAS">  
         </div>
 
 
