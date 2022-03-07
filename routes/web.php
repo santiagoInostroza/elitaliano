@@ -33,7 +33,7 @@ use App\Http\Controllers\Admin\SupplierController;
 
 Route::get('/',  [HomeController::class,'index'])->name('home');
 Route::get('admin',  [AdminController::class,'index'])->middleware(['can:admin','auth:sanctum', 'verified'])->name('admin');
-Route::get('dashboard',  [AdminController::class,'dashboard'])->middleware(['can:admin.dashboard','auth:sanctum', 'verified'])->name('admin.dashboard');
+Route::get('dashboard',  [AdminController::class,'dashboard'])->middleware(['can:admin.dashboard','auth:sanctum', 'verified'])->name('admin.dashboard')->missing(function (Request $request) { return Redirect::route('admin');});
 Route::get('admin/users',  [UserController::class,'index'])->middleware(['can:admin.users','auth:sanctum', 'verified'])->name('admin.users');
 Route::get('admin/purchases',  [PurchaseController::class,'index'])->middleware(['can:admin.purchases','auth:sanctum', 'verified'])->name('admin.purchases');
 

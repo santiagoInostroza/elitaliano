@@ -108,7 +108,7 @@
                 <div x-cloak x-on:resize.window="resize()"  x-data="barraLateral()" class="w-full h-full text-gray-500" >
 
                     {{-- BARRA LATERAL --}}
-                    <div x-cloak  x-show="show" class="fixed flex justify-between items-start shadow border bg-gray-800 text-gray-200 h-screen overflow-auto  w-72"  >
+                    <div x-cloak  x-show="show" class="fixed z-20 flex justify-between items-start shadow border bg-gray-800 text-gray-200 h-screen overflow-auto  w-72"  >
                         <div class="flex-1 p-4 pr-0">
                             @foreach ($vistas as $vista)
                                 @if (isset($vista['can']) && $vista['can'] != "")
@@ -141,7 +141,7 @@
 
                     
                     {{-- MAIN --}}
-                    <div class="w-full h-screen" :class="{'pl-72':(show && !isMobile) }" >
+                    <div class="w-full h-screen " :class="{'pl-72': (show && !isMobile) }" >
                         
                         @if (isset($header))
                             <header class="">
