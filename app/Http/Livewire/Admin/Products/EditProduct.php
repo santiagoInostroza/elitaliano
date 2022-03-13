@@ -19,8 +19,8 @@ class EditProduct extends Component{
         'product.description' => 'nullable|string',
         'product.stock_min' => 'sometimes|nullable|numeric',
         'product.status' => 'boolean',
-        'product.category_id' => 'required',
-        'product.brand_id' => 'required',
+        // 'product.category_id' => 'required',
+        // 'product.brand_id' => 'required',
     ];
     protected $messages = [
         'product.name.required' => 'Debes ingresar un nombre',
@@ -38,7 +38,7 @@ class EditProduct extends Component{
 
     public function save(){
         if($this->product->stock_min==""){
-            $this->product->stock_min=0;
+            $this->product->stock_min=null;
         }
         $this->validate();
         $this->product->save();

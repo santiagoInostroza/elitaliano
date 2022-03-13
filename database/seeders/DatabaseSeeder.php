@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-        $tipo=1;
+        $tipo=2;
 
         if($tipo == 1){  //desarrollo
 
@@ -30,9 +30,8 @@ class DatabaseSeeder extends Seeder
         }
         if($tipo == 2){  //produccion
 
-            $this->call(BrandSeeder::class);
-            $this->call(CategorySeeder::class);
             $this->call(RoleSeeder::class);
+            $this->call(UserSeeder::class);
         
         }
         

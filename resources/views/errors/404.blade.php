@@ -46,16 +46,17 @@
 
                     <div class="ml-4 text-lg text-gray-500 uppercase tracking-wider">
                         @yield('message')
-                        Página no encontrada. Redirigiendo...
+                        Página no encontrada. 
+                        Redirigiendo...
                     </div>
                 </div>
 
-                <div class="m-10 p-6 text-center text-lg text-gray-500 uppercase tracking-wider underline">
+                {{-- <div class="m-10 p-6 text-center text-lg text-gray-500 uppercase tracking-wider underline">
                     <a href="/"> Volver al home </a>
-                 </div>
+                 </div> --}}
 
                  @php
-                     header( "refresh:5;url=/admin" ); 
+                     header( "refresh:3;url=/admin" ); 
                  @endphp
 
 

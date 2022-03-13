@@ -24,21 +24,21 @@ class NewProduct extends Component{
         'description' => 'string',
         'stock_min' => 'numeric',
         'status' => 'boolean',
-        'category_id' => 'required',
-        'brand_id' => 'required',
+        // 'category_id' => 'required',
+        // 'brand_id' => 'required',
     ];
     protected $messages = [
         'name.required' => 'Ingresa nombre',
-        'category_id.required' => 'Selecciona categoria',
-        'brand_id.required' => 'Selecciona Marca',
+        // 'category_id.required' => 'Selecciona categoria',
+        // 'brand_id.required' => 'Selecciona Marca',
     ];
     
     public function mount(){
         $this->description="";
         $this->stock_min='';
         $this->status=true;
-        $this->category_id='';
-        $this->brand_id='';
+        $this->category_id=null;
+        $this->brand_id=null;
 
     }
     

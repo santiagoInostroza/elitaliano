@@ -69,15 +69,24 @@
                 [
                     'name' => 'COMPRAS',
                     'icon' => 'fas fa-file-invoice',
-                    'route' => 'admin.purchases.index',
-                    'can' => 'admin.purchases.index'
+                    'route' => 'admin.purchases.*',
+                    'can' => 'admin.purchases.index',
+                    'child' => [
+                        [
+                            'name' => 'LISTA DE COMPRAS',
+                            'icon' => 'fas fa-file-invoice',
+                            'route' => 'admin.purchases.index',
+                            'can' => 'admin.purchases.create'
+                        ],
+                        [
+                            'name' => 'CREAR COMPRA',
+                            'icon' => 'fas fa-file-invoice',
+                            'route' => 'admin.purchases.create',
+                            'can' => 'admin.purchases.create'
+                        ],
+                    ]
                 ],
-                [
-                    'name' => 'CREAR COMPRA',
-                    'icon' => 'fas fa-file-invoice',
-                    'route' => 'admin.purchases.create',
-                    'can' => 'admin.purchases.create'
-                ],
+               
                 [
                     'name' => 'VENTAS',
                     'icon' => 'fas fa-cash-register',
@@ -131,13 +140,13 @@
                 <div x-cloak x-on:resize.window="resize()"  x-data="barraLateral()" class="w-full h-full text-gray-500" >
 
                     {{-- BARRA LATERAL --}}
-                    <div x-cloak  x-show="show" class="fixed z-20 flex justify-between items-start shadow border bg-gray-800 text-gray-200 h-screen overflow-auto  w-72"  >
-                        <div class="flex-1 p-4 pr-0">
+                    <div x-cloak  x-show="show" class="fixed z-20 flex justify-between items-start shadow border bg-gray-900 text-gray-200 h-screen overflow-auto  w-72"  >
+                        <div class="flex-1">
                            
                                 @foreach ($vistas as $vista)
                                     @if (isset($vista['child']))
                                         <div x-data="{isOpen:false}" >
-                                            <div x-on:click="isOpen = !isOpen"  class="uppercase flex justify-between items-center gap-2 p-4 hover:bg-gray-700 border-b  border-gray-200 w-full cursor-pointer @if(request()->routeIs($vista['route'])) bg-gray-600 @endif" :class=" isOpen ? 'border border-t-0 border-b-0':'' "  >
+                                            <div x-on:click="isOpen = !isOpen" x-on:click.away="isOpen = false" class="uppercase flex justify-between items-center gap-2 p-4 hover:bg-gray-700 border-b  border-gray-200 w-full cursor-pointer @if(request()->routeIs($vista['route'])) bg-gray-600 @endif" :class=" isOpen ? 'border border-gray-500 border-t-0 font-bold bg-gray-800':'' "  >
                                                 <div class="uppercase flex items-center gap-2">
                                                     <div class="text-gray-400">
                                                         <i class="{{$vista['icon']}}"></i>
@@ -149,19 +158,19 @@
                                                     <i x-cloak x-show="!isOpen" class="fas fa-chevron-down" ></i>
                                                 </div>
                                             </div>
-                                            <div x-cloak x-show="isOpen" class="uppercase w-full border border-b-0 border-t-0">
+                                            <div x-cloak x-show="isOpen" class="uppercase w-full border border-b-0 border-t-0 border-gray-500" x-transition>
                                                 
                                                 @foreach ( $vista['child'] as $key => $v )
                                               
                                                     @if ( isset($v['can']) && $v['can'] != "")
                                                         @can($v['can'])
-                                                            <a href="{{ route($v['route']) }}" class="uppercase flex items-center gap-2 p-4 hover:bg-gray-700 border-b border-gray-200 w-full cursor-pointer @if(request()->routeIs($v['route'])) bg-gray-500 @endif">
+                                                            <a href="{{ route($v['route']) }}" class="bg-gray-800 flex items-center pl-14 gap-2 p-2 hover:bg-gray-700 border-b  border-gray-500 w-full cursor-pointer @if(request()->routeIs($v['route'])) bg-gray-500 @endif">
                                                                
-                                                                <h3 class="pl-6">{{ $v['name'] }}</h3>
+                                                                <h3 class="">{{ $v['name'] }}</h3>
                                                             </a>
                                                         @endcan
                                                     @else
-                                                        <a href="{{ route($v['route']) }}" class="uppercase flex items-center gap-2 p-4 hover:bg-gray-700 border-b border-gray-200 w-full cursor-pointer @if(request()->routeIs($v['route'])) bg-gray-500 @endif">
+                                                        <a href="{{ route($v['route']) }}" class="bg-gray-800 flex items-center  pl-14 gap-2 p-4 hover:bg-gray-700 border-b border-gray-500 w-full cursor-pointer @if(request()->routeIs($v['route'])) bg-gray-500 @endif">
                                                            
                                                             <h3 class="pl-6">{{ $v['name'] }}</h3>
                                                         </a>

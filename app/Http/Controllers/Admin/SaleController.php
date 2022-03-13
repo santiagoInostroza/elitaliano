@@ -94,7 +94,7 @@ class SaleController extends Controller{
     public function destroy(Sale $sale){
        
         $saleItemController= new SaleItemController();
-        foreach ($sale->purchaseItems as $key => $item) {
+        foreach ($sale->saleItems as $key => $item) {
            $saleItemController->destroy($item);
         }
         $sale->delete();

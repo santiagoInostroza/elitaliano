@@ -24,8 +24,8 @@ class CreateProductsTable extends Migration
             // $table->tinyInteger('type')->default(0);
             // $table->tinyInteger('caliber')->default(0);
             
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('brand_id');
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->unsignedBigInteger('brand_id')->nullable();
             
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');

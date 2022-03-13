@@ -49,23 +49,25 @@
                                                 <div>{{$role->name}}</div>
                                             @endforeach
                                         </div>
-                                        <x-modal.screen>
-                                            <div class="cursor-pointer hover:bg-gray-200 p-2 rounded">
-                                                <i class="fas fa-pen"></i>
-                                            </div>
-                                            <x-slot name="header">Modificar roles a {{$user->name}}</x-slot>
-                                            <x-slot name="body">       
-                                                @foreach ($roles as $role)
-                                                    <label class="flex gap-4 items-center p-4 hover:bg-gray-200 cursor-pointer" for="{{$user->id}}_{{$role->id}}">
-                                                        <input type="checkbox" value="{{$role->id}}" x-model="roles" id="{{$user->id}}_{{$role->id}}">
-                                                        <div>{{$role->name}}</div>
-                                                    </label>
-                                                @endforeach                                                
-                                            </x-slot>
-                                            <x-slot name="footer">
-                                                <x-jet-button x-on:click="$wire.editRoles(user,roles).then( ()=> {show = !show;}) ">Realizar cambios</x-jet-button>
-                                            </x-slot>
-                                        </x-modal.screen>
+                                        @if (!$user->roles->contains('name','Super Admin')  )
+                                            <x-modal.screen>
+                                                <div class="cursor-pointer hover:bg-gray-200 p-2 rounded">
+                                                    <i class="fas fa-pen"></i>
+                                                </div>
+                                                <x-slot name="header">Modificar roles a {{$user->name}}</x-slot>
+                                                <x-slot name="body">       
+                                                    @foreach ($roles as $role)
+                                                        <label class="flex gap-4 items-center p-4 hover:bg-gray-200 cursor-pointer" for="{{$user->id}}_{{$role->id}}">
+                                                            <input type="checkbox" value="{{$role->id}}" x-model="roles" id="{{$user->id}}_{{$role->id}}">
+                                                            <div>{{$role->name}}</div>
+                                                        </label>
+                                                    @endforeach                                                
+                                                </x-slot>
+                                                <x-slot name="footer">
+                                                    <x-jet-button x-on:click="$wire.editRoles(user,roles).then( ()=> {show = !show;}) ">Realizar cambios</x-jet-button>
+                                                </x-slot>
+                                            </x-modal.screen>
+                                        @endif
                                     </div>
                                 </td>
                                 <td class="p-2 whitespace-nowrap">

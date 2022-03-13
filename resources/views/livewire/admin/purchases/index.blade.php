@@ -40,13 +40,20 @@
                <x-table.td> {{ $purchase->date }}</x-table.td>
                <x-table.td> 
                   <div>
-                     <a href="{{route('admin.purchases.show',$purchase)}}">
-                        <x-jet-secondary-button ><i class="fas fa-eye"></i></x-jet-secondary-button>
-                     </a>
-                     <a href="{{ route('admin.purchases.edit',$purchase)}}">
-                        <x-jet-secondary-button><i class="fas fa-pen"></i></x-jet-secondary-button>
-                     </a>
-                     <x-jet-danger-button x-on:click="openDeletePurchase=true;$wire.setPurchase({{ $purchase }})"><i class="fas fa-trash"></i></x-jet-secondary-button>
+                     @can('admin.purchases.show')
+                        <a href="{{route('admin.purchases.show',$purchase)}}">
+                           <x-jet-secondary-button ><i class="fas fa-eye"></i></x-jet-secondary-button>
+                        </a>
+                     @endcan
+                     @can('admin.purchases.show')
+                        <a href="{{ route('admin.purchases.show',$purchase)}}">
+                           <x-jet-secondary-button><i class="fas fa-pen"></i></x-jet-secondary-button>
+                        </a>
+                     @endcan
+
+                     @can('admin.purchases.destroy')
+                        <x-jet-danger-button x-on:click="openDeletePurchase=true;$wire.setPurchase({{ $purchase }})"><i class="fas fa-trash"></i></x-jet-secondary-button>
+                     @endcan
                   </div>
                </x-table.td>
             </x-table.tr>
@@ -54,16 +61,6 @@
       </x-slot>
    </x-table.table>
    <div>
-      {{-- @if ($openShowPurchase)
-         @livewire('admin.purchases.show', ['purchase' => $purchaseSelected], key('show'.$purchaseSelected->id))
-      @endif
-
-
-      @if ($openEditPurchase)
-         @livewire('admin.purchases.edit', ['purchase' => $purchaseSelected], key('edit'.$purchaseSelected->id))
-      @endif --}}
-
-
    
       @if ($openDeletePurchase)
          <div x-cloak x-show="openDeletePurchase">
@@ -96,8 +93,6 @@
             openDeletePurchase: @entangle('openDeletePurchase'),            
          }
       }
-
-     
       
    </script>
 </div>

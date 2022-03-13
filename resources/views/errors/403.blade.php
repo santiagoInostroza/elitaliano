@@ -10,7 +10,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>@yield('title','Prohibido')</title>
+        <title>@yield('title','Página privada')</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -46,16 +46,17 @@
 
                     <div class="ml-4 text-lg text-gray-500 uppercase tracking-wider">
                         @yield('message')
-                        Parece que no tienes permiso para acceder a esta página. Redirigiendo
+                        Parece que no tienes permiso para acceder a esta página.
+                        Redirigiendo...
                     </div>
                 </div>
 
-                <div class="m-10 p-6 text-center text-lg text-gray-500 uppercase tracking-wider underline">
+                {{-- <div class="m-10 p-6 text-center text-lg text-gray-500 uppercase tracking-wider underline">
                     <a href="/"> Volver al home </a>
-                 </div>
+                 </div> --}}
 
                 @php
-                    header( "refresh:3;url=/admin" ); 
+                    header( "refresh:3;url=/" ); 
                 @endphp
 
             </div>
