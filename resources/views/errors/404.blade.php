@@ -41,12 +41,12 @@
                    
                     <div class="px-4 text-lg text-gray-500 border-r border-gray-400 tracking-wider">
                         @yield('code')
-                        403
+                        404
                     </div>
 
                     <div class="ml-4 text-lg text-gray-500 uppercase tracking-wider">
                         @yield('message')
-                        Parece que no tienes permiso para acceder a esta página. Redirigiendo
+                        Página no encontrada. Redirigiendo...
                     </div>
                 </div>
 
@@ -54,9 +54,10 @@
                     <a href="/"> Volver al home </a>
                  </div>
 
-                @php
-                    header( "refresh:3;url=/admin" ); 
-                @endphp
+                 @php
+                     header( "refresh:5;url=/admin" ); 
+                 @endphp
+
 
             </div>
 

@@ -35,10 +35,16 @@ Route::get('/',  [HomeController::class,'index'])->name('home');
 Route::get('admin',  [AdminController::class,'index'])->middleware(['can:admin','auth:sanctum', 'verified'])->name('admin');
 Route::get('dashboard',  [AdminController::class,'dashboard'])->middleware(['can:admin.dashboard','auth:sanctum', 'verified'])->name('admin.dashboard')->missing(function (Request $request) { return Redirect::route('admin');});
 Route::get('admin/users',  [UserController::class,'index'])->middleware(['can:admin.users','auth:sanctum', 'verified'])->name('admin.users');
-Route::get('admin/purchases',  [PurchaseController::class,'index'])->middleware(['can:admin.purchases','auth:sanctum', 'verified'])->name('admin.purchases');
 
+
+Route::controller(PurchaseController::class)->group(function () {  
+    Route::get('admin/purchases', 'index')->middleware(['can:admin.purchases.index','auth:sanctum', 'verified'])->name('admin.purchases.index');
+    Route::get('admin/purchases/create', 'create')->middleware(['can:admin.purchases.create','auth:sanctum', 'verified'])->name('admin.purchases.create');
+    Route::get('admin/purchases/{purchase}/edit', 'edit')->middleware(['can:admin.purchases.edit','auth:sanctum', 'verified'])->name('admin.purchases.edit');
+    Route::get('admin/purchases/{purchase}', 'show')->middleware(['can:admin.purchases.show','auth:sanctum', 'verified'])->name('admin.purchases.show');
+});  
 Route::controller(SaleController::class)->group(function () {    
-    Route::get('admin/sales','index')->middleware(['can:admin.sales','auth:sanctum', 'verified'])->name('admin.sales');
+    Route::get('admin/sales','index')->middleware(['can:admin.sales.index','auth:sanctum', 'verified'])->name('admin.sales.index');
     Route::get('admin/sales/create', 'create')->middleware(['can:admin.sales.create','auth:sanctum', 'verified'])->name('admin.sales.create')->missing(function (Request $request) { return Redirect::route('admin.sales');});
     Route::get('admin/sales/{sale}/edit', 'edit')->middleware(['can:admin.sales.edit','auth:sanctum', 'verified'])->name('admin.sales.edit')->missing(function (Request $request) { return Redirect::route('admin.sales');});
     Route::get('admin/sales/{sale}', 'show')->middleware(['can:admin.sales.show','auth:sanctum', 'verified'])->name('admin.sales.show')->missing(function (Request $request) { return Redirect::route('admin.sales');});

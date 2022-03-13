@@ -1,8 +1,13 @@
 @extends('layouts.admin')
 
+
 @section('title') 
-    Editar venta  {{$sale->id}}
-    {{-- {{$sale}} --}}
+    <div class="flex justify-between items-center gap-4" >
+        Editar venta  {{$sale->id}}
+        <a href="{{ route('admin.sales.index')}}">
+            <x-jet-button>Ir a lista de ventas</x-jet-button>
+        </a>
+     </div>
 @endsection
 
 @section('content')

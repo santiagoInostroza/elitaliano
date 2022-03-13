@@ -1,4 +1,4 @@
-<div class="w-full mx-auto bg-white  rounded-sm  border-gray-600 ">
+<div class="w-full h-full mx-auto   ">
     @if (isset($title) || isset($subtitlle))
         <header class="px-5 py-4 border-b border-gray-100">
     @endif
@@ -12,9 +12,9 @@
         </header>
     @endif
    
-    <div class=" w-full ">
-            <div class="overflow-auto  w-full m-auto">
-                <table class="overflow-auto  table-auto w-full ">
+    <div class=" w-full h-full">
+            <div class="overflow-auto  w-full h-full m-auto">
+                <table class="table-auto w-full  rounded bg-white">
                     @if (isset($thead))
                         <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
                             {{ $thead}}

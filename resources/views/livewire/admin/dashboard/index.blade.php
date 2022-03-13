@@ -3,7 +3,7 @@
         $data=[
             [
                 'name' => 'COMPRAS',
-                'route' => 'admin.purchases',
+                'route' => 'admin.purchases.index',
                 'bg_color' => 'bg-green-300',
                 'text_color' => 'text-gray-700',
                 'icon' => 'fas fa-file-invoice',
@@ -35,7 +35,7 @@
             ],
             [
                 'name' => 'Ventas',
-                'route' => 'admin.sales',
+                'route' => 'admin.sales.index',
                 'bg_color' => 'bg-green-700',
                 'text_color' => 'text-gray-200',
                 'icon' => 'fas fa-dollar',

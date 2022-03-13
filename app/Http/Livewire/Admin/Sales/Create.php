@@ -193,7 +193,7 @@ class Create extends Component{
         session()->forget('sale');
 
         session()->flash('message','Venta '. $newSale->id . ' creada correctamente!!');
-        return redirect()->route('admin.sales');
+        return redirect()->route('admin.sales.index');
 
              
     }

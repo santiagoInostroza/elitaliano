@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-        $tipo=2;
+        $tipo=1;
 
         if($tipo == 1){  //desarrollo
 

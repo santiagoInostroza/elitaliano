@@ -1,14 +1,13 @@
 <div class="text-gray-500" id="createNewSale" x-data="newSale()" x-init="startNewSale()">
-
     <div class="grid grid-cols-1 lg:grid-cols-7 gap-x-2">
         <section class="lg:col-span-5 grid gap-y-2">
             {{-- PRODUCTOS --}}
-            <article class="shadow bg-white border rounded">
+            <article class="">
                 <div class="relative z-10" >
                     <x-jet-input x-on:click="open()" x-on:keyup.debounce="open()" type="search" class="w-full" x-model="search" placeholder="Buscar producto..."></x-jet-input>
                     
-                    <div x-show="showProducts"  x-on:click.away="close()" class=""   x-transition:enter.scale.1 x-transition:leave.scale.1>
-                        <div class=" z-10 w-full bg-white border shadow absolute  rounded">
+                    <div x-show="showProducts"  x-on:click.away="close()" x-transition:enter.scale.1 x-transition:leave.scale.1>
+                        <div class="w-full bg-white border shadow absolute rounded z-10 ">
                             <ul class="max-h-64  bg-white w-full overflow-auto shadow-2xl" >
                                 <template x-if="filteredProducts.length == 0">
                                     <li class="hover:bg-red-200 text-red-600 p-2 w-full overflow-auto">
@@ -19,20 +18,6 @@
                                 <template x-for="(product, index) in filteredProducts" :key="'product' + product.id">
                                     <li wire:ignore>
                                         <div class="relative " >
-                                            {{-- <template x-if="product.purchase_items.length==0">
-                                                <div class="flex items-center gap-1 border-b border-gray-400 bg-gray-300 text-gray-400 p-2">
-                                                    <div class="flex gap-1 items-center">
-                                                        <figure class="w-10">
-                                                            <img class="w-10" src="{{asset('images/products/sin_imagen.png')}}" alt="">
-                                                        </figure>
-                                                        <div class="" x-text="product.name"></div>
-                                                    </div>
-                                                    <div class="flex justify-between items-center gap-4">
-                                                        <div>Sin stock </div>
-                                                        <span class="" x-html="product.stock"></span>
-                                                    </div> 
-                                                </div>
-                                            </template>                                                                --}}
                                             <template x-for="(item,index2) in (product.purchase_items)" :key="'stockItem' + item.id">
                                                 <div>
                                                     <template x-if="item.stock>0">
@@ -95,9 +80,6 @@
                                                     </template>                                                    
                                                 </div>
                                             </template>
-                                        
-                                          
-                                        
                                         </div>
                                     </li>
                                 </template>
@@ -109,7 +91,7 @@
             {{-- ITEMS AGREGADOS --}}
             <article class="shadow bg-white border rounded overflow-auto" style="height: calc(100vh - 215px);">
                 <template x-if="!items.length>0">
-                    <div class=" ">
+                    <div>
                         <h3 class=" p-4 pb-2 uppercase">No hay productos agregados</h3> 
                         <template x-if="(showErrors)">
                             <div class="text-red-600 text-sm px-4 rounded absolute ">*Selecciona productos para crear una venta</div> 
@@ -221,7 +203,7 @@
             </article>
         </section>
 
-        <section class="lg:col-span-2 ">
+        <section class="lg:col-span-2">
             {{-- total --}}
             <article class="shadow bg-white border rounded h-20 mb-2">
                 <div class="flex justify-between gap-2 items-center p-1 border h-full">
@@ -230,7 +212,7 @@
                 </div>
             </article> 
             {{-- Datos clientes --}}
-            <article class="overflow-auto" style="height: calc(100vh - 251px);">
+            <article class="overflow-auto" style="height: calc(100vh - 254px);">
                 <div class="bg-white shadow  border rounded">
                     <div x-on:click="isOpenCustomerData = !isOpenCustomerData">
                         <div class="flex justify-between gap-1 items-center cursor-pointer p-2 border rounded">
@@ -240,10 +222,10 @@
                                 <div x-show="isOpenCustomerData"><i class="fas fa-angle-up"></i></div>
                             </div>
                         </div>
-                        
                     </div>
                     <div x-cloak x-show="isOpenCustomerData" x-transition>
                         <div class="p-2 pt-4 ">
+
                             <div class="py-2">
                                 <div>Nombre</div>
                                 <div class="flex items-center gap-1">
@@ -264,7 +246,6 @@
                                 @enderror
                             </div>
 
-
                             <div class="py-2">
                                 <div class="w-32">Fecha</div>
                                 <div><x-jet-input class="w-full p-1 shadow" type="date" wire:model='date' ></x-jet-input></div> 
@@ -272,7 +253,6 @@
                                     <div class="text-red-600 text-sm">{{$message}}</div>
                                 @enderror
                             </div>
-
 
                             <div class="py-2">
                                 <div class="">Estado de pago</div>
@@ -307,9 +287,6 @@
                                 @enderror
                                
                             </div>
-
-
-
                             
                             <div class="py-2">
                                 <div class="">Comentario</div>
@@ -392,7 +369,7 @@
                     this.showProducts = false;
                 },
                 addItem:function(item){
-                    console.log(item);
+                    // console.log(item);
                     this.close();
                     this.quantity[this.items.length]='';
                     this.quantityBox[this.items.length]=item.quantity_box;

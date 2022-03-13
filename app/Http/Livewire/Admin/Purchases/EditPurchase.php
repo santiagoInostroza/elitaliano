@@ -8,10 +8,9 @@ use Livewire\Component;
 use App\Models\Supplier;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Admin\PurchaseController;
-use App\Http\Controllers\Admin\PurchaseItemController;
 
-class Edit extends Component{
-    
+class EditPurchase extends Component{
+
     public $purchase;
 
     public $products;
@@ -33,21 +32,9 @@ class Edit extends Component{
     public $payment_amount; 
     public $comment; 
 
+    public $isOpenPurchaseData;
 
-    protected function rules(){
-        $valid = [
-            'supplier_id' => 'required',
-            'payment_status' => 'required',
-            'date' => 'required',
-        ];
-        if($this->payment_status == 2){
-            $valid ['payment_amount']= 'required' ;
-        }
-        // $this->dispatchBrowserEvent('consolelog', ['consolelog' => $valid, 'icon' => 'error',]);
-        return $valid;
-        
-    }
-
+    
     protected $messages = [
         'supplier_id.required' => 'Selecciona proveedor',
         'payment_status.required' => 'Selecciona estado de pago',
@@ -81,16 +68,30 @@ class Edit extends Component{
         $this->payment_status = $this->purchase->payment_status  ;
         $this->comment = $this->purchase->comment ;
 
+        $this->isOpenPurchaseData =(session()->exists('sale.isOpenPurchaseData'))? session('sale.isOpenPurchaseData') :false ;
+
+
     }
 
-
+    protected function rules(){
+        $valid = [
+            'supplier_id' => 'required',
+            'payment_status' => 'required',
+            'date' => 'required',
+        ];
+        if($this->payment_status == 2){
+            $valid ['payment_amount']= 'required' ;
+        }
+        return $valid;
+    }
 
     public function render(){
-        return view('livewire.admin.purchases.edit',[
+        return view('livewire.admin.purchases.edit-purchase',[
             'suppliers' => Supplier::all()
         ]);
     }
 
+    
     public function updateProducts($name = ''){
        
         $this->dispatchBrowserEvent('updateProducts', [
@@ -112,6 +113,10 @@ class Edit extends Component{
        $this->saveSupplierId($supplier->id);
     }
 
+    public function updatedIsOpenPurchaseData(){
+        session(['sale.isOpenPurchaseData' => $this->isOpenPurchaseData]);
+    }
+
     
 
 
@@ -123,11 +128,13 @@ class Edit extends Component{
     public function editPurchase(){
         $validator= $this->validateItems();
         
+        $temp= $this->isOpenPurchaseData;
+        $this->isOpenPurchaseData = true;
         $this->validate();
+        $this->isOpenPurchaseData = $temp;
        
         if(!$validator){
-            $this->dispatchBrowserEvent('toast', ['title' => 'Malena malena', 'icon' => 'error',]);
-          return false;
+            return false;
         }
 
         $items=[];
@@ -154,41 +161,38 @@ class Edit extends Component{
         ];
 
         $purchaseController = new PurchaseController();
-        $purchaseController->edit($this->purchase,$data);
+        $purchaseController->update($this->purchase,$data);
      
-        $this->updateProducts();
-        $this->emitUp('render');
-        $this->emitUp('closeEditPurchase');
-        $this->dispatchBrowserEvent('toast', ['title' => 'Compra modificada', 'icon' => 'success',]);
-        return true;         
+        session()->flash('message','Compra '. $this->purchase->id . ' Modificada correctamente!!');
+        return redirect()->route('admin.purchases.index');      
     }
 
     public function validateItems(){
-        $response = true;
+       
+        if (!$this->items) {
+          return false;
+        }
         foreach ($this->items as $key => $value) {
             if (isset($this->quantity[$key]) && $this->quantity[$key]=="") {
-                $response = false;
+                return false;
             }
             if (isset($this->quantityBox[$key]) && $this->quantityBox[$key]=="") {
-                $response = false;
+                return false;
             }
             if (isset($this->totalQuantity[$key]) && $this->totalQuantity[$key]=="") {
-                $response = false;
+               return false;
             }
             if (isset($this->price[$key]) && $this->price[$key]=="") {
-                $response = false;
+                return false;
             }
             if (isset($this->priceBox[$key]) && $this->priceBox[$key]=="") {
-                $response = false;
+                return false;
             }
             if (isset($this->totalPrice[$key]) && $this->totalPrice[$key]==""){
-                $response = false;
+                return false;
             }
         }
-        if (!$response) {
-            // $this->dispatchBrowserEvent('toast', ['title' => 'Completa campos vacios', 'icon' => 'warning',]);
-        }
-        return $response;
+        return true;
     }
 
 

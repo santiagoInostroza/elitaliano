@@ -2,7 +2,12 @@
 
 
 @section('title') 
-    Crear Venta 
+    <div class="flex justify-between items-center gap-4" >
+        Crear venta
+        <a href="{{ route('admin.sales.index')}}">
+            <x-jet-button>Ir a lista de ventas</x-jet-button>
+        </a>
+     </div>
 @endsection
 
 

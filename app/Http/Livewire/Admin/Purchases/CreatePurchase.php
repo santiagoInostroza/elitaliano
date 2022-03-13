@@ -3,18 +3,14 @@
 namespace App\Http\Livewire\Admin\Purchases;
 
 use Carbon\Carbon;
-use App\Models\Brand;
 use App\Models\Product;
 use Livewire\Component;
-use App\Models\Category;
 use App\Models\Supplier;
-use Illuminate\Support\Str;
-use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\PurchaseItemController;
 
-class NewPurchase extends Component{
-
+class CreatePurchase extends Component
+{
     public $products;
 
     public $date;
@@ -32,11 +28,9 @@ class NewPurchase extends Component{
     public $supplier_id;
     public $payment_status; 
     public $payment_amount; 
-    public $comment; 
+    public $comment;  
 
-    public $view = 1;
-
- 
+    public $isOpenPurchaseData;
 
     protected function rules(){
         $valid = [
@@ -84,11 +78,12 @@ class NewPurchase extends Component{
         $this->payment_amount =(session()->exists('purchase.payment_amount'))? session('purchase.payment_amount') :'' ;
         $this->payment_status =(session()->exists('purchase.payment_status'))? session('purchase.payment_status') :'' ;
         $this->comment =(session()->exists('purchase.comment'))? session('purchase.comment') :'' ;
+        $this->isOpenPurchaseData =(session()->exists('sale.isOpenPurchaseData'))? session('sale.isOpenPurchaseData') :false ;
 
     }
 
     public function render(){
-        return view('livewire.admin.purchases.new-purchase',[
+        return view('livewire.admin.purchases.create-purchase',[
             'suppliers' => Supplier::all()
         ]);
     }
@@ -117,6 +112,9 @@ class NewPurchase extends Component{
         session(['purchase.payment_amount' => $this->payment_amount]);
         session(['purchase.payment_status' => $this->payment_status]);
         session(['purchase.comment' => $this->comment]);
+        // $this->isOpenCustomerData =(session()->exists('sale.isOpenCustomerData'))? session('sale.isOpenCustomerData') :false ;
+        
+        // session(['sale.isOpenPurchaseData' => $this->isOpenPurchaseData]);
     }
 
    
@@ -136,6 +134,11 @@ class NewPurchase extends Component{
         session(['purchase.comment' => $this->comment]);
     }
 
+    public function updatedIsOpenPurchaseData(){
+       
+        session(['sale.isOpenPurchaseData' => $this->isOpenPurchaseData]);
+    }
+
 
     public function saveSupplierId($supplier_id){
         $this->supplier_id = $supplier_id;
@@ -144,7 +147,12 @@ class NewPurchase extends Component{
 
     public function createPurchase(){
         $validator= $this->validateItems();
+
+        $temp= $this->isOpenPurchaseData;
+        $this->isOpenPurchaseData = true;
         $this->validate();
+        $this->isOpenPurchaseData = $temp;
+
         if(!$validator){
           return false;
         }
@@ -161,9 +169,9 @@ class NewPurchase extends Component{
         ];
 
         $purchaseController= new PurchaseController();
-        $newPurchase = $purchaseController->create($purchase);
+        $newPurchase = $purchaseController->store($purchase);
 
-        if($newPurchase>0){
+        if($newPurchase){
             $purchaseItemController = new PurchaseItemController();
 
             foreach ($this->items as $key => $item) {
@@ -175,53 +183,47 @@ class NewPurchase extends Component{
                     'price_box' => $this->priceBox[$key],
                     'total_price' => $this->totalPrice[$key],
                     'stock' => $this->totalQuantity[$key],
-                    'purchase_id' => $newPurchase,
+                    'purchase_id' => $newPurchase->id,
                     'product_id' => $item['id'],
                 ];
                 $purchaseItemController->create($it);
             }          
         }
-        $this->emitUp('render');
-        $this->resetExcept('date');
+       
+       
         session()->forget('purchase');
-        $this->updateProducts();
-        $this->dispatchBrowserEvent('toast', ['title' => 'Compra creada!', 'icon' => 'success',]);
-        return true;         
+
+        session()->flash('message','Compra '. $newPurchase->id . ' creada correctamente!!');
+        return redirect()->route('admin.purchases.index');  
     }
 
     public function validateItems(){
-        $response = true;
+       
         if (!$this->items) {
-            $this->dispatchBrowserEvent('toast', ['title' => 'No hay productos agregados', 'icon' => 'warning',]);
-           return false;
+            return false;
         }
         foreach ($this->items as $key => $value) {
             if (isset($this->quantity[$key]) && $this->quantity[$key]=="") {
-                $response = false;
+                return false;
             }
             if (isset($this->quantityBox[$key]) && $this->quantityBox[$key]=="") {
-                $response = false;
+                return false;
             }
             if (isset($this->totalQuantity[$key]) && $this->totalQuantity[$key]=="") {
-                $response = false;
+                return false;
             }
             if (isset($this->price[$key]) && $this->price[$key]=="") {
-                $response = false;
+                return false;
             }
             if (isset($this->priceBox[$key]) && $this->priceBox[$key]=="") {
-                $response = false;
+                return false;
             }
             if (isset($this->totalPrice[$key]) && $this->totalPrice[$key]==""){
-                $response = false;
+                return false;
             }
         }
-        if (!$response) {
-            // $this->dispatchBrowserEvent('toast', ['title' => 'Completa campos vacios', 'icon' => 'warning',]);
-        }
-        return $response;
+       
+        return true;
     }
-
-    
-
 
 }

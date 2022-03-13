@@ -12,7 +12,5 @@ class Show extends Component{
         return view('livewire.admin.purchases.show');
     }
 
-    public function setPurchase(Purchase $purchase){
-            $this->emitUp('setPurchase',$purchase->next());
-    }
+  
 }

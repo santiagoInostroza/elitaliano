@@ -11,10 +11,14 @@ use App\Models\PurchaseItem;
 class PurchaseController extends Controller{
 
     public function index(){
-        return view('admin.purchases');
+        return view('admin.purchases.index');
     }
 
-    public function create($purchase){
+    public function show(Purchase $purchase){
+        return view('admin.purchases.show',compact('purchase'));
+    }
+
+    public function store($purchase){
 
         if($purchase['payment_status'] == 1){
             $payment_amount =0;
@@ -48,14 +52,22 @@ class PurchaseController extends Controller{
         );
 
         if($newPurchase){
-            return $newPurchase->id;
+            return $newPurchase;
         }else{
             return false;
         }
         
     }
 
-    public function edit(Purchase $purchase,$data){
+    public function create(){
+       return view('admin.purchases.create');
+    }
+
+    public function edit(Purchase $purchase){  
+        return view('admin.purchases.edit', compact('purchase'));   
+    }
+
+    public function update(Purchase $purchase,$data){
         $purchase->supplier_id = $data['supplier_id'];
         $purchase->date = $data['date'] ;
         $purchase->payment_status = $data['payment_status'];
@@ -67,6 +79,9 @@ class PurchaseController extends Controller{
         $purchaseItemController->syncPurchaseItems($purchase,$data['items']);
         
     }
+
+  
+     
 
     public function destroy(Purchase $purchase){
        

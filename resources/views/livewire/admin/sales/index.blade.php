@@ -21,7 +21,7 @@
       </x-slot>
       <x-slot name="tbody">
          @foreach ($sales as $sale)
-            <tr>
+            <x-table.tr>
                <x-table.td> {{$sale->id}}</x-table.td>
                <x-table.td> {{$sale->customer->name}}</x-table.td>
                
@@ -69,7 +69,7 @@
                      <x-jet-danger-button x-on:click="isOpenDeleteSale=true;$wire.setSale({{ $sale }})"><i class="fas fa-trash"></i></x-jet-secondary-button>
                   </div>
                </x-table.td>
-            </tr>
+            </x-table.tr>
          @endforeach
       </x-slot>
    </x-table.table>
