@@ -76,7 +76,7 @@
                             'name' => 'LISTA DE COMPRAS',
                             'icon' => 'fas fa-file-invoice',
                             'route' => 'admin.purchases.index',
-                            'can' => 'admin.purchases.create'
+                            'can' => 'admin.purchases.index'
                         ],
                         [
                             'name' => 'CREAR COMPRA',
@@ -98,7 +98,7 @@
                                 'name' => 'LISTA DE VENTAS',
                                 // 'icon' => 'fas fa-cash-register',
                                 'route' => 'admin.sales.index',
-                                'can' => 'admin.sales.create'
+                                'can' => 'admin.sales.index'
                             ],
                             [
                                 'name' => 'CREAR VENTA',
@@ -106,7 +106,29 @@
                                 'route' => 'admin.sales.create',
                                 'can' => 'admin.sales.create'
                             ],
-                        ]
+                        ],
+                ],
+                
+                [
+                    'name' => 'CATEGORIAS',
+                    'icon' => 'fas fa-cash-register',
+                    'route' => 'admin.categories.*',
+                    'can' => 'admin.categories.index',
+                    'child' =>  
+                    [
+                        [
+                            'name' => 'LISTA DE CATEGORIAS',
+                            // 'icon' => 'fas fa-cash-register',
+                            'route' => 'admin.categories.index',
+                            'can' => 'admin.categories.index'
+                        ],
+                        [
+                            'name' => 'CREAR CATEGORIA',
+                            // 'icon' => 'fas fa-cash-register',
+                            'route' => 'admin.categories.create',
+                            'can' => 'admin.categories.create'
+                        ],
+                    ]
                 ],
 
                
@@ -124,7 +146,7 @@
                     'can' => 'admin.suppliers'
                 ],
                 [
-                    'name' => 'CLIENTES',
+                    'name' => 'Clientes',
                     'icon' => 'fas fa-user',
                     'route' => 'admin.customers',
                     'can' => 'admin.customers'
@@ -140,79 +162,80 @@
                 <div x-cloak x-on:resize.window="resize()"  x-data="barraLateral()" class="w-full h-full text-gray-500" >
 
                     {{-- BARRA LATERAL --}}
-                    <div x-cloak  x-show="show" class="fixed z-20 flex justify-between items-start shadow border bg-gray-900 text-gray-200 h-screen overflow-auto  w-72"  >
-                        <div class="flex-1">
+                    <div x-cloak  x-show="show" class="fixed z-20 shadow border bg-gray-800 text-gray-400 h-screen overflow-auto  w-72 p-4"  >
+                      
+                        <div class="flex gap-2 items-center justify-between mb-8">
                            
-                                @foreach ($vistas as $vista)
-                                    @if (isset($vista['child']))
-                                        <div x-data="{isOpen:false}" >
-                                            <div x-on:click="isOpen = !isOpen" x-on:click.away="isOpen = false" class="uppercase flex justify-between items-center gap-2 p-4 hover:bg-gray-700 border-b  border-gray-200 w-full cursor-pointer @if(request()->routeIs($vista['route'])) bg-gray-600 @endif" :class=" isOpen ? 'border border-gray-500 border-t-0 font-bold bg-gray-800':'' "  >
-                                                <div class="uppercase flex items-center gap-2">
-                                                    <div class="text-gray-400">
-                                                        <i class="{{$vista['icon']}}"></i>
-                                                    </div>
-                                                    <h3>{{ $vista['name'] }}</h3>    
-                                                </div>
-                                                <div>
-                                                    <i x-cloak x-show="isOpen" class="fas fa-chevron-up" ></i>
-                                                    <i x-cloak x-show="!isOpen" class="fas fa-chevron-down" ></i>
-                                                </div>
-                                            </div>
-                                            <div x-cloak x-show="isOpen" class="uppercase w-full border border-b-0 border-t-0 border-gray-500" x-transition>
-                                                
-                                                @foreach ( $vista['child'] as $key => $v )
-                                              
-                                                    @if ( isset($v['can']) && $v['can'] != "")
-                                                        @can($v['can'])
-                                                            <a href="{{ route($v['route']) }}" class="bg-gray-800 flex items-center pl-14 gap-2 p-2 hover:bg-gray-700 border-b  border-gray-500 w-full cursor-pointer @if(request()->routeIs($v['route'])) bg-gray-500 @endif">
-                                                               
-                                                                <h3 class="">{{ $v['name'] }}</h3>
-                                                            </a>
-                                                        @endcan
-                                                    @else
-                                                        <a href="{{ route($v['route']) }}" class="bg-gray-800 flex items-center  pl-14 gap-2 p-4 hover:bg-gray-700 border-b border-gray-500 w-full cursor-pointer @if(request()->routeIs($v['route'])) bg-gray-500 @endif">
-                                                           
-                                                            <h3 class="pl-6">{{ $v['name'] }}</h3>
-                                                        </a>
-                                                    @endif
-                                                
-                                                
-                                                @endforeach   
-        
-                                            </div>
-                                            
-                                        </div>
-                                    @else
-                                        @if (isset($vista['can']) && $vista['can'] != "")
-                                            @can($vista['can'])
-                                            <a href="{{ route($vista['route']) }}" class="uppercase flex items-center gap-2 p-4 hover:bg-gray-700 border-b border-gray-200 w-full cursor-pointer @if(request()->routeIs($vista['route'])) bg-gray-600 @endif">
-                                                <div class="text-gray-400">
-                                                    <i class="{{$vista['icon']}}"></i>
-                                                </div>
-                                                <h3>{{ $vista['name'] }}</h3>
-                                            </a>
-                                            @endcan
-                                        @else
-                                            <a href="{{ route($vista['route']) }}" class="uppercase flex items-center gap-2 p-4 hover:bg-gray-700 border-b border-gray-200 w-full cursor-pointer @if(request()->routeIs($vista['route'])) bg-gray-600 @endif">
-                                                <div class="text-gray-400">
-                                                    <i class="{{$vista['icon']}}"></i>
-                                                </div>
-                                                <h3>{{ $vista['name'] }}</h3>
-                                            </a>
-                                        @endif
-                                    @endif
-                                @endforeach  
-                     
-                            
-                           
-                               
-                     
-                        </div>
-                        <div x-on:click="show=!show" class="bg-gray-800 w-6 h-full font-bold  cursor-pointer hover:bg-gray-700 text-white flex items-center justify-center" >
-                            <div class="py-4">
-                                <i class="fas fa-chevron-left" ></i>
+                            <div class="p-2">
+                                {{auth()->user()->name}}
+                                <div class="text-xs text-gray-500">
+                                    {{auth()->user()->roles()->first()->name}}
+                                </div>
+                            </div>
+                            <div x-on:click="show=!show" class="cursor-pointer px-2">
+                                <i class="fas fa-arrow-left" ></i>
                             </div>
                         </div>
+                        
+                        @foreach ($vistas as $vista)
+                            @if (isset($vista['child']))
+                                <div x-data="{isOpen:false}" >
+                                    <div x-on:click="isOpen = !isOpen" x-on:click.away="isOpen = false" class=" flex justify-between items-center gap-2 p-2 hover:text-white   w-full cursor-pointer @if(request()->routeIs($vista['route'])) bg-gray-900 text-white @endif" :class=" isOpen ? 'font-bold bg-gray-800':'' "  >
+                                        <div class="flex items-center gap-2">
+                                            <div class="text-gray-300">
+                                                <i class="{{$vista['icon']}}"></i>
+                                            </div>
+                                            <h3>{{ Str::ucfirst(Str::lower($vista['name']))  }}</h3>    
+                                        </div>
+                                        <div>
+                                            <i x-cloak x-show="isOpen" class="fas fa-chevron-up" ></i>
+                                            <i x-cloak x-show="!isOpen" class="fas fa-chevron-down" ></i>
+                                        </div>
+                                    </div>
+                                    <div x-cloak x-show="isOpen" class=" w-full" x-transition>
+                                        
+                                        @foreach ( $vista['child'] as $key => $v )
+                                        
+                                            @if ( isset($v['can']) && $v['can'] != "")
+                                                @can($v['can'])
+                                                    <a href="{{ route($v['route']) }}" class="bg-gray-800 flex items-center pl-8 gap-2 p-2 hover:text-white w-full cursor-pointer @if(request()->routeIs($v['route'])) bg-gray-800 text-cyan-500 font-bold hover:text-cyan-700 @endif">
+                                                        <h3 class="">{{ Str::ucfirst(Str::lower($v['name'])) }}</h3>
+                                                    </a>
+                                                @endcan
+                                            @else
+                                                <a href="{{ route($v['route']) }}" class="bg-gray-800 flex items-center  pl-8 gap-2 p-4 hover:text-white w-full cursor-pointer @if(request()->routeIs($v['route'])) bg-gray-800 text-cyan-500 font-bold hover:text-cyan-700 @endif">
+                                                    <h3 class="pl-6">{{ Str::ucfirst(Str::lower($v['name']))  }}</h3>
+                                                </a>
+                                            @endif
+                                        
+                                        
+                                        @endforeach   
+
+                                    </div>
+                                    
+                                </div>
+                            @else
+                                @if (isset($vista['can']) && $vista['can'] != "")
+                                    @can($vista['can'])
+                                    <a href="{{ route($vista['route']) }}" class="flex items-center gap-2 p-2 hover:text-white  w-full cursor-pointer @if(request()->routeIs($vista['route'])) bg-gray-900 text-white @endif">
+                                        <div class="text-gray-400">
+                                            <i class="{{$vista['icon']}}"></i>
+                                        </div>
+                                        <h3>{{  Str::ucfirst(Str::lower($vista['name']))   }}</h3>
+                                      
+                                    </a>
+                                    @endcan
+                                @else
+                                    <a href="{{ route($vista['route']) }}" class="flex items-center gap-2 p-2 hover:text-white w-full cursor-pointer @if(request()->routeIs($vista['route'])) bg-gray-900 text-white @endif">
+                                        <div class="text-gray-400">
+                                            <i class="{{$vista['icon']}}"></i>
+                                        </div>
+                                        <h3>{{ Str::ucfirst(Str::lower($vista['name']))   }}</h3>
+                                    </a>
+                                @endif
+                            @endif
+                        @endforeach  
+                                     
                     </div>
 
                     
@@ -234,12 +257,12 @@
 
                          <!-- Page Heading -->
                         @if (isset($title))
-                            <header class="max-w-7xl mx-auto p-2">
+                            <header class="max-w-10xl mx-auto p-2 md:px-6 xl:px-8">
                                     {{ $title }}
                             </header>
                         @endif
                         @hasSection('title')
-                            <header class="max-w-7xl mx-auto p-2 uppercase">
+                            <header class="max-w-10xl mx-auto p-2 md:px-6 xl:px-8">
                                 @yield('title')
                             </header>
                         @endif
@@ -250,10 +273,12 @@
                         @isset($slot)
                             {{ $slot }}
                         @endisset
-                        <div class="max-w-7xl mx-auto px-2">
+                        <div class="max-w-10xl mx-auto px-2 md:px-6 xl:px-8">
                             @yield('content')
                         </div>
                     </div>
+
+
                     <script>
                         var isMobile = (window.innerWidth < 768) ? true : false;
                         function resize(){
@@ -271,6 +296,7 @@
                             }
                         }
                     </script>
+
                 </div>
                 
             </main>

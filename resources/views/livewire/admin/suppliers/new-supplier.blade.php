@@ -3,7 +3,7 @@
        <x-slot name="header">
            <div class="flex items-center gap-4 justify-between">
                <h2 class="uppercase tracking-wide">Nuevo Proveedor</h2>
-               <div x-on:click="openNewSupplier = false" class="p-4 hover:shadow">
+               <div x-on:click="isOpenNewSupplier = false" class="p-4 hover:shadow">
                     <i class="fas fa-times"></i>
                </div>
            </div>

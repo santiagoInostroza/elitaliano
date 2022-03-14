@@ -9,10 +9,18 @@ module.exports = {
     ],
 
     theme: {
+        
         extend: {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                display: ['Oswald', ],
+                body: ['"Open Sans"',],
             },
+            maxWidth: {
+                '8xl': ['88rem'],
+                '9xl': ['96rem'],
+                '10xl': ['104rem'],
+              },
         },
     },
 

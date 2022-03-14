@@ -19,16 +19,14 @@
 
 @section('title') 
     <div class="flex justify-between items-center gap-4" >
-        Categorias 
-        <a href="{{ route('admin.categories.create')}}">
-            <x-jet-button>Nueva Categoria</x-jet-button>
+        Crear Categoria 
+        <a href="{{ route('admin.categories.index')}}">
+            <x-jet-button>Ir a lista de Categorias</x-jet-button>
         </a>
      </div>
 @endsection
 
 
 @section('content')
-
-    @livewire('admin.categories.index-categories', key('categories'))
-    
+    @livewire('admin.categories.create-category', key('create_category'))
 @endsection

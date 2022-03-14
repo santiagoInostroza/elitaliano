@@ -55,7 +55,7 @@ Route::controller(CategoryController::class)->group(function () {
     Route::get('admin/categories','index')->middleware(['can:admin.categories.index','auth:sanctum', 'verified'])->name('admin.categories.index');
     Route::get('admin/categories/create', 'create')->middleware(['can:admin.categories.create','auth:sanctum', 'verified'])->name('admin.categories.create')->missing(function (Request $request) { return Redirect::route('admin.categories.index');});
     Route::get('admin/categories/{category}/edit', 'edit')->middleware(['can:admin.categories.edit','auth:sanctum', 'verified'])->name('admin.categories.edit')->missing(function (Request $request) { return Redirect::route('admin.categories.index');});
-    Route::get('admin/categories/{categort}', 'show')->middleware(['can:admin.categories.show','auth:sanctum', 'verified'])->name('admin.categories.show')->missing(function (Request $request) { return Redirect::route('admin.categories.index');});
+    Route::get('admin/categories/{category}', 'show')->middleware(['can:admin.categories.show','auth:sanctum', 'verified'])->name('admin.categories.show')->missing(function (Request $request) { return Redirect::route('admin.categories.index');});
 });
 
 

@@ -13,6 +13,10 @@
        <div class="grid gap-4">
         <div>Ventas del mes</div>
         <div>Ventas de ayer</div>
+
+        <div>
+            Otras estadisticas...
+        </div>
        </div>
       
     </div>

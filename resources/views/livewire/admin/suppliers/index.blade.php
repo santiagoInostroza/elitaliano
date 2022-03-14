@@ -5,8 +5,8 @@
         <x-slot name="title">Proveedores</x-slot>
         <x-slot name="subtitle">
             <div class="flex justify-end">
-                <x-jet-button x-on:click="openNewSupplier = true">Nuevo proveedor</x-jet-button>
-                <div x-cloak x-show="openNewSupplier">
+                <x-jet-button x-on:click="isOpenNewSupplier = true">Nuevo proveedor</x-jet-button>
+                <div x-cloak x-show="isOpenNewSupplier">
                     @livewire('admin.suppliers.new-supplier')
                 </div>
             </div>
@@ -80,8 +80,8 @@
     <script>
         function supplierMain(){
             return{
-                openNewSupplier:false,
-                openEditSupplier:false,
+                isOpenNewSupplier:false,
+                isOpenEditSupplier:false,
             }
         }
     </script>

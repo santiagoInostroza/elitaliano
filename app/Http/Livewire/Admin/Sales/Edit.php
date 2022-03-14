@@ -19,6 +19,7 @@ class Edit extends Component{
     public $date;
     public $items;
     public $items2;
+    public $items3;
 
     public $quantity;
     public $quantityBox;
@@ -66,11 +67,13 @@ class Edit extends Component{
     public function mount(){ 
         $this->products = $this->getProducts();
         $this->date= Carbon::now()->format('Y-m-d');  
+        
+       
         foreach ($this->sale->saleItems as $key => $item) {
-            
 
-            $this->items []= PurchaseItem::find($item->id)->with(['product','purchase'])->first(); 
-            $this->items2 []= $item->id; 
+            $this->items []= purchaseItem::find($item->purchase_item_id)->with(['product','purchase'])->first(); 
+            $this->items2 []= $item->purchase_item_id; 
+            $this->items3 []= saleItem::find($item->id)->first(); 
     
             $this->quantity []= $item->quantity;  
             $this->quantityBox []=$item->quantity_box;  
@@ -147,8 +150,9 @@ class Edit extends Component{
            
         $modifiedItems=[];
         foreach ($this->items as $key => $item) {
-            $modifiedItems[$item['id']] = [
-                'sale_item_id' => $this->quantity[$key],
+            $purchase_item_id = $item['id'];
+            $modifiedItems[$purchase_item_id] = [
+                // 'sale_item_id' => $this->quantity[$key],
                 'quantity' => $this->quantity[$key],
                 'quantity_box' => $this->quantityBox[$key],
                 'total_quantity' => $this->totalQuantity[$key],
@@ -157,7 +161,7 @@ class Edit extends Component{
                 'price_box' => $this->priceBox[$key],
                 'total_price' => $this->totalPrice[$key],
 
-                'purchase_item_id' => $item['id'],
+                'purchase_item_id' => $purchase_item_id,
                 
             ];
             
@@ -167,14 +171,13 @@ class Edit extends Component{
         
        
         session()->flash('message', 'Venta '. $this->sale->id .' modificada correctamente !!');
-        return redirect()->route('admin.sales');
+        return redirect()->route('admin.sales.index');
 
              
     }
 
     public function validateItems(){
         if (!$this->items) {
-            // $this->dispatchBrowserEvent('toast', ['title' => 'No hay productos agregados', 'icon' => 'warning',]);
            return false;
         }
         foreach ($this->items as $key => $value) {
@@ -189,10 +192,15 @@ class Edit extends Component{
             }
             if (isset($this->totalQuantity[$key]) ) {
                 $purchaseItem = PurchaseItem::find($value['id']);
-                if ($this->totalQuantity[$key] > $purchaseItem->stock ) {
-                    // $this->dispatchBrowserEvent('toast', ['title' => 'No hay suficiente stock de '. $purchaseItem->product->name . ' del ' . $purchaseItem->purchase->date . ' Disponible ' . $purchaseItem->stock . 'k.', 'icon' => 'warning','timer'=>3500]);
-                    return false;
-                }
+                if(isset($this->items3[$key])){
+                    if ($this->totalQuantity[$key] > $purchaseItem->stock + $this->items3[$key]['total_quantity']  ) {
+                         return false;
+                   }
+                }else{
+                    if ($this->totalQuantity[$key] > $purchaseItem->stock ) {
+                         return false;
+                   }
+                }               
             }
 
             if (isset($this->price[$key]) && $this->price[$key]=="") {

@@ -2,9 +2,9 @@
     <x-table.table>
         <x-slot name="title">Productos</x-slot>
         <x-slot name="subtitle">
-            <div class="flex justify-end" x-data="{openNewProduct:false}">
-                <x-jet-button x-on:click="openNewProduct=true">Nuevo Producto</x-jet-button>
-                <div x-cloak x-show="openNewProduct">
+            <div class="flex justify-end" x-data="{isOpenNewProduct:false}">
+                <x-jet-button x-on:click="isOpenNewProduct=true">Nuevo Producto</x-jet-button>
+                <div x-cloak x-show="isOpenNewProduct">
                     @livewire('admin.products.new-product')
                 </div>
 

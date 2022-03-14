@@ -34,6 +34,7 @@
                                             </template>                                                               
                                             <template x-for="(item,index2) in (product.purchase_items)" :key="'itemmm' + item.id">
                                                 <div class="hover:bg-gray-100 border-b p-2" :class="{'hover:bg-green-200 bg-green-100 text-green-600 ': items2.includes(item.id) }">
+                                                   
                                                     <div class="flex items-center justify-between gap-1 relative"  >
                                                         <div class="flex items-center gap-1">
                                                             <div x-on:click="addItem(item)" class=" absolute  inset-0 cursor-pointer" :class="{'hidden':items2.includes(item.id)}"></div>
@@ -114,10 +115,19 @@
 
                                                         <div class="flex items-center gap-1">
                                                             stock
-                                                            <span title="Stock" class="" x-text="item.stock"></span>
-                                                            <div class="flex items-center text-green-600 ">
-                                                                (<span title="Stock despues de ingresar la venta" x-text="number_format(Number(item.stock) - Number(totalQuantity[index]))"></span>)
-                                                            </div>
+                                                        
+                                                                <span title="Stock" class="" x-text="item.stock"></span>
+                                                          
+                                                   
+                                                                <div class="flex items-center text-green-600 ">
+                                                                    (<span title="Stock despues de ingresar la venta" 
+                                                                    x-text="if(typeof items3[index] !== 'undefined'){
+                                                                       return number_format(item.stock + items3[index].total_quantity - totalQuantity[index])
+                                                                    }else{
+                                                                        return number_format(item.stock - totalQuantity[index])
+                                                                    }"></span>)
+                                                                </div> 
+                                                        
                                                         </div>
 
                                                         <div class="flex items-center gap-1">
@@ -314,6 +324,7 @@
 
                 items:[],
                 items2:[],
+                items3:[],
                 quantity:[],
                 quantityBox:[],
                 totalQuantity:[],
@@ -442,6 +453,7 @@
                 startEditSale:function(){
                     this.items=@js($items);
                     this.items2=@js($items2);
+                    this.items3=@js($items3);
                     this.quantity=@js($quantity);
                     this.quantityBox=@js($quantityBox);
                     this.totalQuantity=@js($totalQuantity);
